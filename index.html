@@ -52,6 +52,7 @@
         </div>
         <!--Column for displaying the current data and 5 day forecast-->
         <div class="col-lg-8">
+        <!--Section: Current day weather based on city name-->  
           <section class="card p-3" id="current-data">
             <h3 id="city"></h3>
             <h4 id="date"></h4>
@@ -59,8 +60,13 @@
             <p id="humidity"></p>
             <p id="wind"></p>
             <p id="uv-index">UV Index: <span class="color-code"></span></p>
-            </section>
-
+          </section>
+        <!--Section: Five day weather forecast -->
+          <section id="forecast" class="m-2">
+            <h3> 5-Day Forecast</h3>
+            <!--Dynamically created cards for 5-day weather forecast-->
+            <div class="card-deck">
+            </div>
           </section>
         </div>
       </div>
