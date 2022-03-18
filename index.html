@@ -32,8 +32,39 @@
   <body>
     <!--Header Section-->
     <header class="navbar navbar-dark bg-primary">
-      <h1 class="text-light mx-auto">Weather Dashboard></h1>
+      <h1 class="text-light mx-auto">Weather Dashboard</h1>
     </header>
+    <!--Container Section-->
+    <div class="container-fluid">
+      <div class="row mt-2">
+        <!--Column for entering city name-->
+        <div class="col-lg-4">
+          <div class="card bg-light p-2 mb-2">
+          <!--Form-->
+            <h3>Search for a City: </h3>
+            <form class="form-inline" id="city-form">
+              <input class="form-control sm-2" id="city-name" type="search" placeholder="Search" aria-label="search">
+              <button type="button" class="btn btn-primary my-2 ml-2" type="submit" id="button-submit">Search</button>
+            </form>
+          <!--Unordered list for each city searched will be added to the new list-->
+            <ul class="list-group mt-2" id="city-lists"></ul>
+          </div>
+        </div>
+        <!--Column for displaying the current data and 5 day forecast-->
+        <div class="col-lg-8">
+          <section class="card p-3" id="current-data">
+            <h3 id="city"></h3>
+            <h4 id="date"></h4>
+            <p id="temperature"></p>
+            <p id="humidity"></p>
+            <p id="wind"></p>
+            <p id="uv-index">UV Index: <span class="color-code"></span></p>
+            </section>
+
+          </section>
+        </div>
+      </div>
+    </div>
     <!--Link to Jquery library-->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <!--Link to Moment.js library-->
