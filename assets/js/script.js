@@ -21,3 +21,17 @@ function searchCity () {
 // After the user's city is saved,clearing the input fields.
   $("input").val("");
 }
+
+// Add eventListener to the button element.
+$("#city-form").submit(function(event) {
+  event.preventDefault();
+  searchCity();
+});
+$("#button-submit").click(function(event) {
+  event.preventDefault();
+  searchCity(); 
+});
+$("ul").on("click","button",function() {
+  cityName = $(this).text();
+  console.log(cityName);
+})
