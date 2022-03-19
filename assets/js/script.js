@@ -13,7 +13,7 @@ var getUserInput = function(cityName) {
       console.log(lan,lon);
       $("#city").text(data.name);
       $("#date").text(new Date(data.dt*1000));
-      localStorage.setItem("city", data.name);
+      //localStorage.setItem("city", data.name);
       getWeatherData(lan,lon);
     });
   });
@@ -24,9 +24,21 @@ function getWeatherData(lan,lon) {
   fetch(apiUrl1).then(function(response) {
     response.json().then(function(data) {
     console.log(data);
+    var icon = data.current.weather[0].icon;
+    var displayImg = $("<img>");
+    displayImg.attr("src","http://openweathermap.org/img/wn/" + icon + "@2x.png");
+    $("#city").append(displayImg);
+    var temp = data.current.temp;
+    var tempF = parseInt((( temp - 273.15) * 9/5) + 32);
+    $("#temperature").text("Temperature: " + tempF + "F");
+    var humid = data.current.humidity;
+    $("#humidity").text("Humidity: " + humid + "%");
+    var wind = data.current.wind_speed;
+    $("#wind").text("Wind-Speed: " + wind + "MPH");
+    // Color-coded Uv-Index.
+    
+    
     $("#current-data").css({"display": "block"});
-    
-    
         
     });
   });

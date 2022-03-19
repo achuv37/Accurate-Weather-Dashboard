@@ -1,3 +1,8 @@
 #current-data,#forecast {
   display: none;
 }
+img {
+  max-width: 5%;
+  height: auto;
+  display: block;
+}
