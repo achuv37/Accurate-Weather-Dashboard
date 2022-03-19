@@ -35,9 +35,21 @@ function getWeatherData(lan,lon) {
     $("#humidity").text("Humidity: " + humid + "%");
     var wind = data.current.wind_speed;
     $("#wind").text("Wind-Speed: " + wind + "MPH");
-    // Color-coded Uv-Index.
-    
-    
+  // Color-coded Uv-Index.
+    var uviIndex = parseInt(data.current.uvi);
+  // Checking the conditions.
+    if(uviIndex <=2) {
+      $(".color-code").css({"background-color": "green", "color": "black"});
+  } else if(uviIndex >= 3 && uviIndex <= 5) {
+      $(".color-code").css({"background-color": "yellow", "color": "black"});
+  } else if(uviIndex <=6 && uviIndex >=7) {
+      $(".color-code").css({"background-color": "orange", "color": "black"});
+  } else if(uviIndex <=8 && uviIndex >=10) {
+      $(".color-code").css({"background-color": "red", "color": "black"});;
+  } else if(uviIndex >= 11) {
+      $(".color-code").css({"background-color": "purple", "color": "black"});
+  } 
+    $(".color-code").text(data.current.uvi);
     $("#current-data").css({"display": "block"});
         
     });
