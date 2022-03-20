@@ -1,27 +1,47 @@
+// Pseudo code
+// 1. Declare the Variables.
+// 2. Create a function that allows user to enter the city name, and the weather is displayed using Open Weather Map API.
+// 3. Create another function for displaying current weather data includes Date,Temperature,Humidity,Wind speed and UV-Index.
+// 4. UV-Index change its color based on the conditions.
+// 5. Display five day forecast includes Date, Temperature, Humidity.
+// 6. Set the local storage to save the city search history.
+// 7. Error Handling.
+
+// Declaring the variables.
 var userFormEl = document.querySelector("#city-form");
 var nameInputEl = document.querySelector("#city-name");
+var lan = "";
+var lon = "";
 
 var getUserInput = function(cityName) {
-  // format the github api url
+  // format the weather api url
   var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q="+ cityName +"&appid=3e40f415c86db2e6bfc1aa88c8631d39";
 
   // make a request to the url
   fetch(apiUrl).then(function(response) {
     response.json().then(function(data) {
-      var lan = data.coord.lat;
-      var lon = data.coord.lon;
+   // Assigning the values to the variables   
+      lan = data.coord.lat;
+      lon = data.coord.lon;
       console.log(lan,lon);
+   // Html element display the city and date 
       $("#city").text(data.name);
       $("#date").text(new Date(data.dt*1000));
+   // Set the city name to local storage
       localStorage.setItem("city", data.name);
+   // Calling the function to display more details
       getWeatherData(lan,lon);
     });
   });
 }
+
+// function getWeatherData
 function getWeatherData(lan,lon) {
+  // format weather api url
   var apiUrl1 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lan + "&lon="  
       + lon + "&appid=3e40f415c86db2e6bfc1aa88c8631d39";
-  fetch(apiUrl1).then(function(response) {
+  // Make a request to the url
+      fetch(apiUrl1).then(function(response) {
     response.json().then(function(data) {
     console.log(data);
     var icon = data.current.weather[0].icon;
@@ -62,6 +82,7 @@ function getWeatherData(lan,lon) {
       var displayTemp = parseInt((( tempData - 273.15) * 9/5) + 32);
       var displayHumid = dailyData[i].humidity;
       var displayIcon = dailyData[i].weather[0].icon;
+      
       
     // Creating card elements dynamically.
       var forecastCards = $("<div class='card text-light bg-primary p-3'>");
@@ -119,7 +140,12 @@ function localStorageList() {
   }
 }
 localStorageList(); 
+// Add eventListener 
+userFormEl.addEventListener("submit", formSubmitHandler);
 
-
-
-userFormEl.addEventListener("submit", formSubmitHandler); 
+/* $("ul").on("click", "button", function () {
+  cityName = $(this).text();
+  
+  console.log(cityName);
+  getUserInput();
+}); */
