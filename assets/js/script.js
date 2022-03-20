@@ -10,7 +10,7 @@
 // Declaring the variables.
 var userFormEl = document.querySelector("#city-form");
 var nameInputEl = document.querySelector("#city-name");
-var lan = "";
+var lat = "";
 var lon = "";
 
 var getUserInput = function(cityName) {
@@ -21,29 +21,31 @@ var getUserInput = function(cityName) {
   fetch(apiUrl).then(function(response) {
     response.json().then(function(data) {
    // Assigning the values to the variables   
-      lan = data.coord.lat;
       lon = data.coord.lon;
-      console.log(lan,lon);
+      lat = data.coord.lat;
+      console.log(lon,lat);
    // Html element display the city and date 
       $("#city").text(data.name);
       $("#date").text(new Date(data.dt*1000));
    // Set the city name to local storage
       localStorage.setItem("city", data.name);
    // Calling the function to display more details
-      getWeatherData(lan,lon);
+      getWeatherData(lat,lon);
     });
   });
 }
 
 // function getWeatherData
-function getWeatherData(lan,lon) {
+function getWeatherData(lat,lon) {
   // format weather api url
-  var apiUrl1 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lan + "&lon="  
+  var apiUrl1 = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon="  
       + lon + "&appid=3e40f415c86db2e6bfc1aa88c8631d39";
   // Make a request to the url
       fetch(apiUrl1).then(function(response) {
     response.json().then(function(data) {
     console.log(data);
+    // clearing five day fore cast before next one.
+    $(".card-deck").empty();
     var icon = data.current.weather[0].icon;
     var displayImg = $("<img>");
     displayImg.attr("src","http://openweathermap.org/img/wn/" + icon + "@2x.png");
@@ -82,6 +84,8 @@ function getWeatherData(lan,lon) {
       var displayTemp = parseInt((( tempData - 273.15) * 9/5) + 32);
       var displayHumid = dailyData[i].humidity;
       var displayIcon = dailyData[i].weather[0].icon;
+      var displayWind = dailyData[i].wind_speed;
+      var displayUvi = dailyData[i].uvi;
       
       
     // Creating card elements dynamically.
@@ -90,22 +94,28 @@ function getWeatherData(lan,lon) {
       var imgIcon = $("<img>");
       var tempEl = $("<p>");
       var humidEl = $("<p>");
+      var windEl = $("<p>");
+      var uviEl = $("<p>");
     // Adding content to the dynamically created elements.
       dateEl.text(displayDate);
       imgIcon.attr("src", "http://openweathermap.org/img/wn/" + displayIcon + "@2x.png");
       
-      tempEl.text("Temp: " + displayTemp + "F");
-      humidEl.text("Humidity: " + displayHumid + "%");
+      tempEl.text("Temp : " + displayTemp + "F");
+      humidEl.text("Humidity : " + displayHumid + "%");
+      windEl.text("Wind : " + displayWind + "MPH");
+      uviEl.text("UVI-Index : " + displayUvi);
     // Append to the div element.
       forecastCards.append(dateEl);
       forecastCards.append(imgIcon);
       forecastCards.append(tempEl);
       forecastCards.append(humidEl);
+      forecastCards.append(windEl);
+      forecastCards.append(uviEl);
       $(".card-deck").append(forecastCards);
     // Display five day forecast.
       $("#forecast").css({"display": "block"});
     }
-    })
+    });
   });
 
 }
@@ -117,7 +127,7 @@ var cityName = nameInputEl.value.trim();
 
 if (cityName) {
   getUserInput(cityName);
-  var cityList = $("button");
+  var cityList = $("<button>");
   cityList.addClass("list-group-item list-group-item-action");
   cityList.text(cityName);
   $("ul").prepend(cityList);
@@ -136,16 +146,19 @@ function localStorageList() {
     cityName.text(cityHistory);
     cityName.addClass("list-group-item list-group-item-action");
     $("ul").prepend(cityName);
-    getUserInput();
+    getUserInput(cityName);
   }
 }
 localStorageList(); 
 // Add eventListener 
-userFormEl.addEventListener("submit", formSubmitHandler);
-
-/* $("ul").on("click", "button", function () {
-  cityName = $(this).text();
+//userFormEl.addEventListener("submit", formSubmitHandler);
+$("#city-form").submit(formSubmitHandler);
+  
+//$("#button-submit").click(formSubmitHandler);
+  
+$("ul").on("click", "button", function () {
+   var cityName = $(this).text();
   
   console.log(cityName);
-  getUserInput();
-}); */
+  getUserInput(cityName);
+}); 
