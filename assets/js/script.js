@@ -13,7 +13,7 @@ var getUserInput = function(cityName) {
       console.log(lan,lon);
       $("#city").text(data.name);
       $("#date").text(new Date(data.dt*1000));
-      //localStorage.setItem("city", data.name);
+      localStorage.setItem("city", data.name);
       getWeatherData(lan,lon);
     });
   });
@@ -88,8 +88,7 @@ function getWeatherData(lan,lon) {
   });
 
 }
-
-
+// function formSubmitHandler
 var formSubmitHandler = function(event) {
   event.preventDefault();
 // get value from input element
@@ -105,5 +104,22 @@ if (cityName) {
 } else {
   alert("Please enter a city name");
 }
-};
+getUserInput();
+}
+
+// Function for local storage.
+function localStorageList() {
+  var cityHistory = localStorage.getItem("city");
+  if(cityHistory!==null) {
+    var cityName = $("<button>");
+    cityName.text(cityHistory);
+    cityName.addClass("list-group-item list-group-item-action");
+    $("ul").prepend(cityName);
+    getUserInput();
+  }
+}
+localStorageList(); 
+
+
+
 userFormEl.addEventListener("submit", formSubmitHandler); 
