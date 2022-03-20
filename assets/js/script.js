@@ -27,6 +27,7 @@ function getWeatherData(lan,lon) {
     var icon = data.current.weather[0].icon;
     var displayImg = $("<img>");
     displayImg.attr("src","http://openweathermap.org/img/wn/" + icon + "@2x.png");
+    displayImg.css({"width": "10%"});
     $("#city").append(displayImg);
     var temp = data.current.temp;
     var tempF = parseInt((( temp - 273.15) * 9/5) + 32);
@@ -51,8 +52,39 @@ function getWeatherData(lan,lon) {
   } 
     $(".color-code").text(data.current.uvi);
     $("#current-data").css({"display": "block"});
-        
-    });
+ 
+    // We need to display 5 day forecast.,using for  loop to iterate through the data.
+    var dailyData = data.daily;
+    console.log(dailyData);  
+    for(var i = 1; i <dailyData.length - 2; i++) {
+      var displayDate = new Date(dailyData[i].dt*1000);
+      var tempData = dailyData[i].temp.day;
+      var displayTemp = parseInt((( tempData - 273.15) * 9/5) + 32);
+      var displayHumid = dailyData[i].humidity;
+      var displayIcon = dailyData[i].weather[0].icon;
+      
+    // Creating card elements dynamically.
+      var forecastCards = $("<div class='card text-light bg-primary p-3'>");
+      var dateEl = $("<h6>");
+      var imgIcon = $("<img>");
+      var tempEl = $("<p>");
+      var humidEl = $("<p>");
+    // Adding content to the dynamically created elements.
+      dateEl.text(displayDate);
+      imgIcon.attr("src", "http://openweathermap.org/img/wn/" + displayIcon + "@2x.png");
+      
+      tempEl.text("Temp: " + displayTemp + "F");
+      humidEl.text("Humidity: " + displayHumid + "%");
+    // Append to the div element.
+      forecastCards.append(dateEl);
+      forecastCards.append(imgIcon);
+      forecastCards.append(tempEl);
+      forecastCards.append(humidEl);
+      $(".card-deck").append(forecastCards);
+    // Display five day forecast.
+      $("#forecast").css({"display": "block"});
+    }
+    })
   });
 
 }
