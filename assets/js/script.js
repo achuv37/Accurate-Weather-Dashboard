@@ -26,7 +26,8 @@ var getUserInput = function(cityName) {
       console.log(lon,lat);
    // Html element display the city and date 
       $("#city").text(data.name);
-      $("#date").text(new Date(data.dt*1000));
+      var dateFormat = new Date(data.dt*1000);
+      $("#date").text(dateFormat.toDateString());
    // Set the city name to local storage
       localStorage.setItem("city", data.name);
    // Calling the function to display more details
@@ -79,7 +80,8 @@ function getWeatherData(lat,lon) {
     var dailyData = data.daily;
     console.log(dailyData);  
     for(var i = 1; i <dailyData.length - 2; i++) {
-      var displayDate = new Date(dailyData[i].dt*1000);
+      var dateFormatEl = new Date(dailyData[i].dt*1000);
+      var displayDate = dateFormatEl.toDateString();
       var tempData = dailyData[i].temp.day;
       var displayTemp = parseInt((( tempData - 273.15) * 9/5) + 32);
       var displayHumid = dailyData[i].humidity;
@@ -127,7 +129,7 @@ var cityName = nameInputEl.value.trim();
 
 if (cityName) {
   getUserInput(cityName);
-  var cityList = $("<button>");
+  var cityList = $("<li>");
   cityList.addClass("list-group-item list-group-item-action");
   cityList.text(cityName);
   $("ul").prepend(cityList);
@@ -141,12 +143,13 @@ getUserInput();
 // Function for local storage.
 function localStorageList() {
   var cityHistory = localStorage.getItem("city");
-  if(cityHistory!==null) {
-    var cityName = $("<button>");
+  if(cityHistory !== null) {
+    
+    var cityName = $("<li>");
     cityName.text(cityHistory);
     cityName.addClass("list-group-item list-group-item-action");
     $("ul").prepend(cityName);
-    getUserInput(cityName);
+    getUserInput();
   }
 }
 localStorageList(); 
@@ -156,8 +159,8 @@ $("#city-form").submit(formSubmitHandler);
   
 //$("#button-submit").click(formSubmitHandler);
   
-$("ul").on("click", "button", function () {
-   var cityName = $(this).text();
+$("ul").on("click", "li", function () {
+  var cityName = $(this).text();
   
   console.log(cityName);
   getUserInput(cityName);
