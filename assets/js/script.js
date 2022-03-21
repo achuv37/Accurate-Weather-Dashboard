@@ -15,11 +15,12 @@ var lon = "";
 
 var getUserInput = function(cityName) {
   // format the weather api url
-  var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q="+ cityName +"&appid=3e40f415c86db2e6bfc1aa88c8631d39";
+  var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=3e40f415c86db2e6bfc1aa88c8631d39";
 
   // make a request to the url
   fetch(apiUrl).then(function(response) {
     response.json().then(function(data) {
+      
    // Assigning the values to the variables   
       lon = data.coord.lon;
       lat = data.coord.lat;
@@ -32,8 +33,10 @@ var getUserInput = function(cityName) {
       localStorage.setItem("city", data.name);
    // Calling the function to display more details
       getWeatherData(lat,lon);
+      
     });
   });
+    
 }
 
 // function getWeatherData
@@ -45,23 +48,27 @@ function getWeatherData(lat,lon) {
       fetch(apiUrl1).then(function(response) {
     response.json().then(function(data) {
     console.log(data);
-    // clearing five day fore cast before next one.
+    // clearing five day forecast before next one.
     $(".card-deck").empty();
+    // Weather icon from data
     var icon = data.current.weather[0].icon;
     var displayImg = $("<img>");
     displayImg.attr("src","http://openweathermap.org/img/wn/" + icon + "@2x.png");
     displayImg.css({"width": "10%"});
     $("#city").append(displayImg);
+    // Temperature from data. converting K to F
     var temp = data.current.temp;
     var tempF = parseInt((( temp - 273.15) * 9/5) + 32);
     $("#temperature").text("Temperature: " + tempF + "F");
+    // Humidity
     var humid = data.current.humidity;
     $("#humidity").text("Humidity: " + humid + "%");
+    // Wind-speed
     var wind = data.current.wind_speed;
     $("#wind").text("Wind-Speed: " + wind + "MPH");
   // Color-coded Uv-Index.
     var uviIndex = parseInt(data.current.uvi);
-  // Checking the conditions.
+  // Checking the conditions:(low,medium,high,very-high and extreme)
     if(uviIndex <=2) {
       $(".color-code").css({"background-color": "green", "color": "black"});
   } else if(uviIndex >= 3 && uviIndex <= 5) {
@@ -74,12 +81,14 @@ function getWeatherData(lat,lon) {
       $(".color-code").css({"background-color": "purple", "color": "black"});
   } 
     $(".color-code").text(data.current.uvi);
+    // Display the current weather data
     $("#current-data").css({"display": "block"});
  
-    // We need to display 5 day forecast.,using for  loop to iterate through the data.
+    // We need to display 5 day forecast.,using for  loop to iterate through the DailyData.
     var dailyData = data.daily;
     console.log(dailyData);  
     for(var i = 1; i <dailyData.length - 2; i++) {
+      // date format
       var dateFormatEl = new Date(dailyData[i].dt*1000);
       var displayDate = dateFormatEl.toDateString();
       var tempData = dailyData[i].temp.day;
@@ -91,7 +100,7 @@ function getWeatherData(lat,lon) {
       
       
     // Creating card elements dynamically.
-      var forecastCards = $("<div class='card text-light bg-primary p-3'>");
+      var forecastCards = $("<div class='card text-light bg-info p-3'>");
       var dateEl = $("<h6>");
       var imgIcon = $("<img>");
       var tempEl = $("<p>");
@@ -126,9 +135,9 @@ var formSubmitHandler = function(event) {
   event.preventDefault();
 // get value from input element
 var cityName = nameInputEl.value.trim();
-
+  
 if (cityName) {
-  getUserInput(cityName);
+  getUserInput(cityName); 
   var cityList = $("<li>");
   cityList.addClass("list-group-item list-group-item-action");
   cityList.text(cityName);
@@ -136,8 +145,8 @@ if (cityName) {
   nameInputEl.value = "";
 } else {
   alert("Please enter a city name");
-}
-getUserInput();
+} 
+//getUserInput();
 }
 
 // Function for local storage.
@@ -153,9 +162,10 @@ function localStorageList() {
   }
 }
 localStorageList(); 
+
 // Add eventListener 
-//userFormEl.addEventListener("submit", formSubmitHandler);
-$("#city-form").submit(formSubmitHandler);
+userFormEl.addEventListener("submit", formSubmitHandler);
+//$("#city-form").submit(formSubmitHandler);
   
 //$("#button-submit").click(formSubmitHandler);
   
@@ -165,3 +175,4 @@ $("ul").on("click", "li", function () {
   console.log(cityName);
   getUserInput(cityName);
 }); 
+
