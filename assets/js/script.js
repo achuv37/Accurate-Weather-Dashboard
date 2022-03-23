@@ -10,8 +10,8 @@
 // Declaring the variables.
 var userFormEl = document.querySelector("#city-form");
 var nameInputEl = document.querySelector("#city-name");
-var lat = "";
-var lon = "";
+var lat;
+var lon;
 
 var getUserInput = function(cityName) {
   // format the weather api url
@@ -35,8 +35,11 @@ var getUserInput = function(cityName) {
       getWeatherData(lat,lon);
       
     });
-  });
+  }) .catch(function(err) {
+    console.log(err); 
+    alert('an error ocurred');
     
+  });
 }
 
 // function getWeatherData
@@ -56,7 +59,7 @@ function getWeatherData(lat,lon) {
     displayImg.attr("src","http://openweathermap.org/img/wn/" + icon + "@2x.png");
     displayImg.css({"width": "10%"});
     $("#city").append(displayImg);
-    // Temperature from data. converting K to F
+    //Temperature from data. converting K to F
     var temp = data.current.temp;
     var tempF = parseInt((( temp - 273.15) * 9/5) + 32);
     $("#temperature").text("Temperature: " + tempF + "F");
@@ -127,6 +130,9 @@ function getWeatherData(lat,lon) {
       $("#forecast").css({"display": "block"});
     }
     });
+  }).catch(function(err) {
+    console.log(err); 
+    
   });
 
 }
@@ -134,6 +140,7 @@ function getWeatherData(lat,lon) {
 var formSubmitHandler = function(event) {
   event.preventDefault();
 // get value from input element
+
 var cityName = nameInputEl.value.trim();
   
 if (cityName) {
@@ -158,7 +165,7 @@ function localStorageList() {
     cityName.text(cityHistory);
     cityName.addClass("list-group-item list-group-item-action");
     $("ul").prepend(cityName);
-    getUserInput();
+    getUserInput(cityHistory);
   }
 }
 localStorageList(); 
@@ -167,7 +174,7 @@ localStorageList();
 userFormEl.addEventListener("submit", formSubmitHandler);
 //$("#city-form").submit(formSubmitHandler);
   
-//$("#button-submit").click(formSubmitHandler);
+$("#button-submit").click(formSubmitHandler);
   
 $("ul").on("click", "li", function () {
   var cityName = $(this).text();
@@ -176,3 +183,4 @@ $("ul").on("click", "li", function () {
   getUserInput(cityName);
 }); 
 
+// Error handling
