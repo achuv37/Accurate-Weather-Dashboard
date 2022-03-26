@@ -59,6 +59,7 @@ function getWeatherData(lat, lon) {
       
       // clearing five day forecast before next one.
       $(".card-deck").empty();
+      
       // Weather icon from data
       var icon = data.current.weather[0].icon;
       var displayImg = $("<img>");
@@ -211,4 +212,5 @@ $("ul").on("click", "li", function () {
   getUserInput(cityName);
 });
 
-// Error handling
+
+
