@@ -71,7 +71,7 @@ function getWeatherData(lat, lon) {
       //Temperature from data. converting K to F
       var temp = data.current.temp;
       var tempF = parseInt(((temp - 273.15) * 9 / 5) + 32);
-      $("#temperature").text("Temperature: " + tempF + "F");
+      $("#temperature").text("Temperature: " + tempF + "°F");
       // Humidity
       var humid = data.current.humidity;
       $("#humidity").text("Humidity: " + humid + "%");
@@ -125,7 +125,7 @@ function getWeatherData(lat, lon) {
         var displayHumid = dailyData[i].humidity;
         var displayIcon = dailyData[i].weather[0].icon;
         var displayWind = dailyData[i].wind_speed;
-        var displayUvi = dailyData[i].uvi;
+        //var displayUvi = dailyData[i].uvi;
 
 
         // Creating card elements dynamically.
@@ -135,22 +135,22 @@ function getWeatherData(lat, lon) {
         var tempEl = $("<p>");
         var humidEl = $("<p>");
         var windEl = $("<p>");
-        var uviEl = $("<p>");
+        //var uviEl = $("<p>");
         // Adding content to the dynamically created elements.
         dateEl.text(displayDate);
         imgIcon.attr("src", "http://openweathermap.org/img/wn/" + displayIcon + "@2x.png");
 
-        tempEl.text("Temp : " + displayTemp + "F");
+        tempEl.text("Temp : " + displayTemp + "°F");
         humidEl.text("Humidity : " + displayHumid + "%");
         windEl.text("Wind : " + displayWind + "MPH");
-        uviEl.text("UVI-Index : " + displayUvi);
+        //uviEl.text("UVI-Index : " + displayUvi);
         // Append to the div element.
         forecastCards.append(dateEl);
         forecastCards.append(imgIcon);
         forecastCards.append(tempEl);
         forecastCards.append(humidEl);
         forecastCards.append(windEl);
-        forecastCards.append(uviEl);
+        // forecastCards.append(uviEl);
         $(".card-deck").append(forecastCards);
         // Display five day forecast.
         $("#forecast").css({
