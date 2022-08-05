@@ -21,6 +21,9 @@
   * HTML
   * CSS
   * JavaScript
+
+## Install
+To install this project into your own, use ` git clone <reponame> ` in your command-line.
 ## Images
 ![Image 1](https://user-images.githubusercontent.com/93412486/160261915-8f8e4eeb-12cc-43ba-b91e-5bdc397b7e35.PNG)
 ![Florida](https://user-images.githubusercontent.com/93412486/160261914-08324ad8-c4ea-481c-9df9-78b89eed3d01.PNG)
